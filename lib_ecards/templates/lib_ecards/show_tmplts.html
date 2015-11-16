@@ -1,0 +1,55 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title></title>-->
+    <!--&lt;!&ndash; Latest compiled and minified CSS &ndash;&gt;-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">-->
+
+    <!--&lt;!&ndash; Optional theme &ndash;&gt;-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">-->
+
+    <!--&lt;!&ndash; Latest compiled and minified JavaScript &ndash;&gt;-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>-->
+<!--</head>-->
+<!--<body>-->
+{% extends "base.html" %}
+
+
+{% block header %}
+    מציג תבניות מוכנות
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="panel panel-default">
+         <div class="panel-body">
+        <div class="container-fluid">
+        <nav>
+          <div class="col-md-1">
+          <ul class="pager">
+            <li class="previous"><a href="{% url "show_tmplts_prev" pk=first_index %}"><span aria-hidden="true">&larr;</span> הקודם</a></li>
+          </ul>
+        </div>
+
+        {% for t in tmplts %}
+            <div class="col-md-1">
+            <a href="#" class="thumbnail">
+              <img src="http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=thumbnail&dps_pid={{ t.thumbnail_id }}">
+            </a>
+            </div>
+        {% endfor %}
+          <div class="col-md-1">
+          <ul class="pager">
+            <li class="next"><a href="{% url "show_tmplts_next" pk=last_index %}">הבא <span aria-hidden="true">&rarr;</span></a></li>
+          </ul>
+        </div>
+        </nav>
+         </div>
+    </div>
+    </div>
+{% endblock %}
+
+<!--</body>-->
+<!--</html>-->
