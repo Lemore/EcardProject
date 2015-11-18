@@ -14,9 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.contrib import admin
+
+import os.path
+import editor.views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^editor/', editor.views.display_editor),
     url(r'', include('lib_ecards.urls')),
 ]
+
+EDITOR_PATH = os.path.join(os.path.dirname(__file__), '..', 'editor')
+
+urlpatterns += static("app/", document_root=os.path.join(EDITOR_PATH, 'app'))
+urlpatterns += static("bower_components/", document_root=os.path.join(EDITOR_PATH, 'bower_components'))
