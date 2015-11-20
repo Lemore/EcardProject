@@ -45,6 +45,7 @@ def show_tmplts (request):
     tmplts = sheet.objects.all()[:10]
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : 0 , 'last_index' : 9})
 
+
 def show_tmplts_next(request, pk):
     last_index = int(pk)
 
@@ -73,7 +74,16 @@ def show_tmplts_prev(request, pk):
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : first_index , 'last_index' : last_index})
 
 
-def search_tmplts (request, pk):
-    tmplts = sheet.objects.filter(subject__contains="????")
+def search_tmplts (request):
+    print ("SEARCHING")
+    search_str = request.GET.get('search')
+    tmplts = sheet.objects.filter(subject__contains=search_str)
     last_index = len(tmplts)
-    return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : 0 , 'last_index' : last_index})
+    return HttpResponse()
+        ### render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : 0 , 'last_index' : last_index})
+
+
+def select_picture(request, pk):
+    print ("In Select Picture")
+    pic_url = "http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid=FL9179903"
+    return HttpResponse.__setitem__("link_url", "HELLO")

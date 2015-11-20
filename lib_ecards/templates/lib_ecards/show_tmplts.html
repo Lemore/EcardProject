@@ -23,6 +23,8 @@
 
 {% block search %}
 
+
+
     <div class="panel panel-default">
          <div class="panel-body">
         <div class="container-fluid">
@@ -35,7 +37,7 @@
 
         {% for t in tmplts %}
             <div class="col-md-1">
-            <a href="#" class="thumbnail">
+            <a href="#" class="thumbnail" data-text="{{ t.link_id }}">
               <img src="http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=thumbnail&dps_pid={{ t.thumbnail_id }}">
             </a>
             </div>
@@ -47,8 +49,17 @@
         </div>
         </nav>
          </div>
+    <h3 id="link_url">Initial text</h3>
     </div>
     </div>
+
+<script>
+$(function() {
+    $( ".thumbnail" ).click(function(){
+        $("#link_url").text('http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid=' + $(this).data('text'));
+    });
+});
+</script>
 {% endblock %}
 
 <!--</body>-->
