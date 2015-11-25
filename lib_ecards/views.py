@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.http import HttpResponse
@@ -72,6 +74,12 @@ def show_tmplts_prev(request, pk):
 
     tmplts = sheet.objects.all()[first_index : last_index]
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : first_index , 'last_index' : last_index})
+
+
+def mem_editor(request, pk):
+    tmplt = sheet.objects.get(pk=pk)
+    context = {'tmplt': tmplt, 'regions': json.loads(tmplt.regions)}
+    return render(request, 'lib_ecards/mem_editor.html', context)
 
 
 def search_tmplts (request):
