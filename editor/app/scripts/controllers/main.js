@@ -172,10 +172,10 @@ angular.module('cardkitApp')
     }
 
     if(typeof $scope.config.themes !== 'undefined') {
-      $scope.theme = ($scope.config.themes.length > 1) ? null : $scope.config.themes[0];
+      $scope.theme = $scope.config.themes[0];
     }
 
-    $scope.size = ($scope.config.sizes.length > 1) ? null : $scope.config.sizes[0];
+    $scope.size = $scope.config.sizes[0];
 
     $scope.$watch('theme', function() {
       $scope.$broadcast('changeTheme');
