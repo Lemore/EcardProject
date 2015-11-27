@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^add_picture$', views.add_picture, name='add_picture'),
     url(r'^select_picture/(?P<pk>.*)/$', views.select_picture, name='select_picture'),
     url(r'^$', views.show_tmplts, name='show_tmplts'),
+    url(r'^mem_editor/(?P<pk>[0-9]+)/$', views.mem_editor, name='mem_editor'),
     url(r'^show_tmplts$', views.show_tmplts, name='show_tmplts'),
     url(r'^show_tmplts_next/(?P<pk>[0-9]+)/$', views.show_tmplts_next, name='show_tmplts_next'),
     url(r'^show_tmplts_prev/(?P<pk>[0-9]+)/$', views.show_tmplts_prev, name='show_tmplts_prev'),
