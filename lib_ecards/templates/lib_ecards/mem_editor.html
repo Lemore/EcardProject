@@ -1,0 +1,17 @@
+{% load staticfiles %}
+
+<div id="editor">
+</div>
+
+<div>
+  <img src="{{ tmplt.image_url }}" style="position: absolute" />
+  {% for r in regions %}
+    <svg width="400" height="600" style="position: absolute">
+        <rect x="{{ r.x }}" y="{{ r.y }}" width="{{ r.width }}" height="{{ r.height }}" style="fill:{{ r.color }}" />
+        <text id="region{{ count }}_text" x="{{ r.x }}" y="{{ r.y }}" style="fill:white; font-size:30">asdasda</text>
+    </svg> 
+  {% endfor %}
+</div>
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="{% static "scripts.js" %}"></script>
