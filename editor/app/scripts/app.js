@@ -30,7 +30,7 @@ angular
       .state('index', {
         url: '/',
         controller: 'MainCtrl',
-        templateUrl: 'app/views/main.html',
+        templateUrl: '/app/views/main.html',
         resolve: {
           themeConfig: function(themeConfigProvider) {
             return themeConfigProvider;

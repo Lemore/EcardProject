@@ -342,7 +342,7 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'fonts/*',
-            'app/themes.config.json'
+            '/app/themes.config.json'
           ]
         }, {
           expand: true,

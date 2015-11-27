@@ -11,7 +11,7 @@ angular.module('cardkitApp')
   .provider('themeConfigProvider', function () {
   	return {
 	    $get: function($http, $q) {
-			var defaultConfig = $http.get('app/themes.config.json').catch(function(err) {
+			var defaultConfig = $http.get('/app/themes.config.json').catch(function(err) {
 				if(err.status === 404) {
 					return [];
 				}
