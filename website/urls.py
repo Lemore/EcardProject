@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^editor/', editor.views.display_editor),
     url(r'', include('lib_ecards.urls')),
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('django.contrib.auth.urls', namespace='auth')),
 ]
 
 EDITOR_PATH = os.path.join(os.path.dirname(__file__), '..', 'editor')

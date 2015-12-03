@@ -21,3 +21,10 @@ class sheet(models.Model):
 
     def thumbnail_url(self):
         return 'http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=thumbnail&dps_pid={}'.format(self.thumbnail_id)
+
+
+
+
+class ecard_text (models.Model):
+    text = models.TextField(default='')
+    sheet = models.ForeignKey(sheet)
