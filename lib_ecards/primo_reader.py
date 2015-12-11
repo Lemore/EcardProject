@@ -22,14 +22,17 @@ def getSheets(start_index, bulk_size):
         if(elem.tag == "{http://www.exlibrisgroup.com/xsd/jaguar/search}DOC"):
             sheet = {}
             doc = elem
-            doc_id = doc.attrib.get('ID')
+            # doc_id = doc.attrib.get('ID')
             subject = ""
             # rights = ""
-            print ("ID = " + doc_id)
+            # print ("ID = " + doc_id)
 #            ids.append(doc_id)
-            sheet.update({"recordid" : doc_id})
+#             sheet.update({"recordid" : doc_id})
             for e in doc.iter():
                 # print (e.tag)
+
+                if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}recordid"):
+                    sheet.update({"recordid" : e.text})
 
                 if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}lds41"):
 #                    thumbnails.append(e.text)
@@ -53,6 +56,7 @@ def getSheets(start_index, bulk_size):
                             subject = subject + s.text + ','
 
                     sheet.update( { "subjects" : subject })
+                    sheet.update( { "regions" : ""})
 
             # if sheet.get("rights") == "This item can be accessed by the general public from within and outside the library":
             if sheet.get("rights") == "הצפייה בפריט זה חופשית לכלל המשתמשים, בספרייה ומחוצה לה":
@@ -66,5 +70,46 @@ def getSheets(start_index, bulk_size):
     return sheets
 #    return thumbnails
 
+def getSheetByRecId(recordId):
 
-getSheets(1, 10)
+    sheet = {}
+
+    url = 'http://primo.nli.org.il/PrimoWebServices/xservice/search/brief?institution=NNL_Ephemera&query=rid,exact,{}&indx=1&bulkSize=1'.format(recordId)
+    print (url)
+    u = urllib.request.urlopen(url)
+    tree = ElementTree.parse(u).getroot()
+
+    for elem in tree.iter():
+        if(elem.tag == "{http://www.exlibrisgroup.com/xsd/jaguar/search}DOC"):
+            doc = elem
+            subject = ""
+
+            for e in doc.iter():
+                if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}recordid"):
+                    sheet.update({"recordid" : e.text})
+
+                if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}lds41"):
+                    sheet.update( {"thumbnail_id" : e.text[e.text.rfind('=')+1:] })
+
+                if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}lds42"):
+                    sheet.update( {"link_id" : e.text[e.text.rfind('=')+1:] })
+
+                if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}rights"):
+                    sheet.update( {"rights" : e.text[e.text.rfind('=')+1:] })
+
+                if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}search"):
+                    search = e
+                    for s in search.iter():
+                        if(s.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}title"):
+                            sheet.update( {"title" : s.text })
+
+                        if(s.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}subject"):
+                            subject = subject + s.text + ','
+
+                    sheet.update( { "subjects" : subject })
+                    sheet.update( { "regions" : ""})
+    return sheet
+
+# getSheetByRecId("NNL_Ephemera01002926506")
+
+# getSheets(1, 10)

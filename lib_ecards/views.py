@@ -19,10 +19,12 @@ def thumbnail_list_next(request, pk):
     return render(request, 'lib_ecards/thumbnail_list.html', {'sheets' : sheets, 'last_index' : last_index})
 
 
+
 def thumbnail_list(request):
     sheets = primo_reader.getSheets(1, 50)
     last_index = 1 + 50
     return render(request, 'lib_ecards/thumbnail_list.html', {'sheets' : sheets, 'last_index' : last_index})
+
 
 
 def add_picture(request):
@@ -36,11 +38,29 @@ def add_picture(request):
     link = request.POST.get('link_id')
     rec = request.POST.get('recordid')
     sub = request.POST.get('subjects')
+    rights = request.POST.get('rights')
+
+    mysheet = sheet(title=tit, thumbnail_id=thumb, link_id=link, recordid=rec, subjects=sub, rights=rights)
+    mysheet.save()
+
+    return JsonResponse({'message': 'success'})
 
 
-    print("thumbnail" + thumb)
+def add_picture_template(request):
+    print("Adding Picture template")
 
-    mysheet = sheet(title=tit, thumbnail_id=thumb, link_id=link, recordid=rec, subjects=sub)
+    rec = request.POST.get('recordid')
+    sht = primo_reader.getSheetByRecId(rec)
+    tit = sht.get('title')
+    thumb = sht.get('thumbnail_id')
+    link = sht.get('link_id')
+    sub = sht.get('subjects')
+    rights = sht.get('rights')
+    regions = request.POST.get('regions')
+
+    print("About to save")
+    mysheet = sheet(title=tit, thumbnail_id=thumb, link_id=link, recordid=rec,
+                    subjects=sub, rights=rights, regions=regions)
     mysheet.save()
 
     return JsonResponse({'message': 'success'})
@@ -49,6 +69,7 @@ def add_picture(request):
 def show_tmplts (request):
     tmplts = sheet.objects.all()[:10]
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : 0 , 'last_index' : 9})
+
 
 
 def show_tmplts_next(request, pk):
@@ -65,6 +86,7 @@ def show_tmplts_next(request, pk):
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : first_index , 'last_index' : last_index})
 
 
+
 def show_tmplts_prev(request, pk):
     first_index = int(pk)
 
@@ -79,10 +101,12 @@ def show_tmplts_prev(request, pk):
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : first_index , 'last_index' : last_index})
 
 
+
 def mem_editor(request, pk):
     tmplt = sheet.objects.get(pk=pk)
     context = {'tmplt': tmplt, 'regions': json.loads(tmplt.regions)}
     return render(request, 'lib_ecards/mem_editor.html', context)
+
 
 
 def mem_editor_save (request, pk):
@@ -124,6 +148,7 @@ def show_ecard(request, pk):
     return render(request, 'lib_ecards/show_ecard.html', context)
 
 
+
 def search_tmplts (request):
     print ("SEARCHING")
     search_str = request.GET.get('search')
@@ -133,10 +158,22 @@ def search_tmplts (request):
         ### render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : 0 , 'last_index' : last_index})
 
 
+
 def select_picture(request, pk):
     print ("In Select Picture")
     pic_url = "http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid=FL9179903"
     return HttpResponse.__setitem__("link_url", "HELLO")
+
+
+def template_editor(request, pk):
+    print(request)
+    sheet = primo_reader.getSheetByRecId(pk);
+    link = sheet.get("link_id")
+
+    pic_url = "http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid=" + link
+    print("PICURL" + pic_url)
+    context = {'pic_url': pic_url }
+    return render(request, 'lib_ecards/template_editor.html', context)
 
 
 def thirdauth(request):

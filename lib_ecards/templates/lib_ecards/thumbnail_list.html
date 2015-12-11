@@ -28,6 +28,8 @@
         var lnk = $(this).data("link_id");
         var rec = $(this).data("recordid");
         var sub = $(this).data("subjects");
+        var rts = $(this).data("rights");
+        var reg = $(this).data("regions");
         var csrfToken = $("[name='csrfmiddlewaretoken']").val()
 
         $.ajax({
@@ -41,6 +43,7 @@
                 link_id: lnk,
                 recordid: rec,
                 subjects: sub,
+                rights: rts
             },
             success: function(data) {
                  console.log(data)
@@ -64,9 +67,9 @@
                     <div class="col-md-2">
                         <input type="checkbox" id="{{ s.recordid }}"
                                data-title="{{ s.title }}" data-thumbnail_id="{{ s.thumbnail_id }}" data-link_id="{{ s.link_id }}"
-                               data-recordid="{{ s.recordid }}" data-subjects="{{ s.subjects }}"/>
+                               data-recordid="{{ s.recordid }}" data-subjects="{{ s.subjects }}", data-rights="{{ s.rights }}"/>
 
-                        <a href="#" class="thumbnail">
+                        <a href="{% url 'template_editor' pk=s.recordid %}" class="thumbnail" >
                             <img src="http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=thumbnail&dps_pid={{ s.thumbnail_id }}">
                         </a>
                     </div>
