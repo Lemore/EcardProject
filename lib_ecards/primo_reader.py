@@ -2,18 +2,23 @@ __author__ = 'user'
 
 from xml.etree import ElementTree
 import urllib
+from urllib.parse import quote
 
-
-def getSheets(start_index, bulk_size):
+def getSheets(start_index, bulk_size, search_str):
 #    thumbnails = []
 #    ids = []
     sheets = []
 
     index = str(start_index)
     bulk = str(bulk_size)
+    searches = "&query=any,contains,%22%D7%9B%D7%A8%D7%96%D7%95%D7%AA%22"
 
-    url = 'http://primo.nli.org.il/PrimoWebServices/xservice/search/brief?institution=NNL_Ephemera&query=any,' \
-          'contains,%22%D7%9B%D7%A8%D7%96%D7%95%D7%AA%22&indx={}&bulkSize={}'.format(index, bulk)
+    if search_str != "":
+        search_str = quote(search_str, safe='')
+        print(search_str)
+        searches = searches + "&query=any,contains,\"" + search_str + "\""
+
+    url = 'http://primo.nli.org.il/PrimoWebServices/xservice/search/brief?institution=NNL_Ephemera{}&indx={}&bulkSize={}'.format(searches, index, bulk)
     print (url)
     u = urllib.request.urlopen(url)
     tree = ElementTree.parse(u).getroot()

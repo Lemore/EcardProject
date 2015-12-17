@@ -10,10 +10,24 @@
 <div style = "width:100%; margin:10px">
 <div style = "float: left">
     <div style = "float:top "  >
-        <button id="rect" class="btn btn-default">Text Area</button>
-        <button id="colorpicker" class="btn btn-default">Color</button>
+        <form>
+        <div class="input-group">
+            <span class="input-group-addon" >R</span>
+            <input type="text" class="form-control" id="col_red" placeholder="50" aria-describedby="basic-addon1">
+            <span class="input-group-addon">G</span>
+            <input type="text" class="form-control" id="col_green" placeholder="50" aria-describedby="basic-addon1">
+            <span class="input-group-addon">B</span>
+            <input type="text" class="form-control" id="col_blue" placeholder="50" aria-describedby="basic-addon1">
+            <div class="input-group-btn">
+                <button id="colorb" class="btn btn-default">Color</button>
+            </div>
+        </div>
+        </form>
+
+
         <button id="clear" class="btn btn-default">Clear</button>
         <button id="save" class="btn btn-default">Save</button>
+        <button id="back" class="btn btn-default">Back</button>
     </div>
     <br/>
     <div id = "canvasDiv" style = "float:bottom"  style="position: absolute; margin:10px">
@@ -32,10 +46,13 @@
   <!--<canvas id="paint" width="800" height="550">-->
   <!--</canvas>-->
 
-
-          <!--<label id="color">Color Picker-->
-             <!--<canvas id="colorpicker" width="200" height="200"></canvas>-->
-          <!--</label>-->
+<div style = "float: left">
+       <canvas id="paint">
+        </canvas>
+      <label id="color">Color Picker
+         <canvas id="colorpicker" width="200" height="200"></canvas>
+      </label>
+</div>
           <!--<label id="imagelabel">Image name </label>-->
           <!--<input id="imagename" name="imagename">-->
           <!--<input id="save" type=button value="save" >-->

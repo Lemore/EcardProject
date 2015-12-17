@@ -1,4 +1,5 @@
 import json
+import random
 
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
@@ -12,17 +13,20 @@ from .models import ecard_text
 
 # Create your views here.
 def thumbnail_list_next(request, pk):
-    sheets = primo_reader.getSheets(int(pk), 50)
+    start_idx = random.randint(0, 15800)
+    bulk_size = 20
+    sheets = primo_reader.getSheets(start_idx, bulk_size, "")
+    # sheets = primo_reader.getSheets(int(pk), bulk_size)
     print("PK = " + pk)
     print(len(sheets))
-    last_index = int(pk) + 50
+    last_index = start_idx
     return render(request, 'lib_ecards/thumbnail_list.html', {'sheets' : sheets, 'last_index' : last_index})
 
 
 
 def thumbnail_list(request):
-    sheets = primo_reader.getSheets(1, 50)
-    last_index = 1 + 50
+    sheets = primo_reader.getSheets(1, 20, "")
+    last_index = 1 + 20
     return render(request, 'lib_ecards/thumbnail_list.html', {'sheets' : sheets, 'last_index' : last_index})
 
 
@@ -152,9 +156,17 @@ def show_ecard(request, pk):
 def search_tmplts (request):
     print ("SEARCHING")
     search_str = request.GET.get('search')
-    tmplts = sheet.objects.filter(subject__contains=search_str)
-    last_index = len(tmplts)
-    return HttpResponse()
+
+    start_idx = 1
+    bulk_size = 20
+    sheets = primo_reader.getSheets(start_idx, bulk_size, search_str)
+    # sheets = primo_reader.getSheets(int(pk), bulk_size)
+    last_index = 20
+    return render(request, 'lib_ecards/thumbnail_list.html', {'sheets' : sheets, 'last_index' : last_index, 'search_str' : search_str})
+
+    # tmplts = sheet.objects.filter(subject__contains=search_str)
+    # last_index = len(tmplts)
+    # return HttpResponse()
         ### render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : 0 , 'last_index' : last_index})
 
 

@@ -15,7 +15,8 @@ $(function() {
     var clickDrag = new Array();
     var paint;
     var tool="rect";
-    var currentcolor="black";
+    var currentcolor = "black";
+    var fillcolor = "white";
 
     canvas = document.createElement('canvas');
     canvas.setAttribute('width', img_width);
@@ -37,14 +38,13 @@ $(function() {
         context.drawImage(imageObj, 0, 0, img_width, img_height);
     };
 
-    var imageData = context.getImageData(0, 0, img_width, img_height);
-    var img_data = imageData.data;// RETURNS ALL ZEROS - WHY???
+//    var imageData = context.getImageData(0, 0, img_width, img_height);
+//    var img_data = imageData.data;// RETURNS ALL ZEROS - WHY???
 
     $('#canvas').mousedown(function(e){
-        console.log("Mouse down");
         mouseX = e.pageX - this.offsetLeft;
         mouseY = e.pageY - this.offsetTop;
-
+        fillcolor = "white"; //getFillColor();
 //        currentcolor = getPixelColor(mouseX, mouseY);
 //        console.log(currentcolor);
         paint = true;
@@ -64,12 +64,12 @@ $(function() {
     });
 
     $('#canvas').mouseup(function(e){
-        console.log("Mouse Up");
         paint = false;
 
         var obj={};
         obj.type="rect";
         obj.color=currentcolor;
+        obj.fill=fillcolor;
         obj.x1=mouseX;
         obj.y1=mouseY;
         obj.x2=e.pageX - this.offsetLeft;
@@ -79,7 +79,6 @@ $(function() {
 
 
     $('#canvas').mouseleave(function(e){
-        console.log("Mouse leave");
         paint = false;
     });
 
@@ -90,14 +89,12 @@ $(function() {
 //    }
 
     $('#clear').click(function(e){
-        console.log("Clear");
         dataObjects=[];
         paint = false;
         redraw();
     });
 
     $('#save').click(function(e){
-        console.log("Saving");
         console.log($(this));
 
         var csrfToken = $("[name='csrfmiddlewaretoken']").val()
@@ -113,7 +110,10 @@ $(function() {
                 regions: regions,
             },
             success: function(data) {
-                 console.log(data)
+                 console.log;
+                 dataObjects=[];
+                 paint = false;
+                 redraw();
             },
             failure: function(errMsg) {alert(errMsg)}
         })
@@ -125,7 +125,6 @@ $(function() {
     });
 
     function redraw(){
-      console.log("Redraw");
 //      context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
         context.drawImage(imageObj, 0, 0, img_width, img_height);
 //        context.drawImage(imageObj, 69, 50);
@@ -134,6 +133,7 @@ $(function() {
             obj=dataObjects[i];
             if(obj.type=="rect"){
                 context.strokeStyle=obj.color;
+                context.fillStyle=obj.fill;
                 drawrect(obj.x1,obj.y1,obj.x2,obj.y2);
             }
             i++;
@@ -158,18 +158,31 @@ $(function() {
     }
 
 
-    function getPixelColor(x, y) {//DOESN'T WORK
-        console.log(img_data);
+//    function getPixelColor(x, y) {//DOESN'T WORK
+//        console.log(img_data);
+//
+//        var red = img_data[((img_width * y) + x) * 4];
+//        var green = img_data[((img_width * y) + x) * 4 + 1];
+//        var blue = img_data[((img_width * y) + x) * 4 + 2];
+//        var alpha = img_data[((img_width * y) + x) * 4 + 3];
+//
+//        console.log(red);
+//        console.log(green);
+//        console.log(blue);
+//        console.log(alpha);
+//
+//        var color = new Color([red, green, blue]);
+//        return color;
+//    }
 
-        var red = img_data[((img_width * y) + x) * 4];
-        var green = img_data[((img_width * y) + x) * 4 + 1];
-        var blue = img_data[((img_width * y) + x) * 4 + 2];
-        var alpha = img_data[((img_width * y) + x) * 4 + 3];
+    function getFillColor() {
+        var red = $('#col-red').val();
+        var green = $('#col-green').val();
+        var blue = $('#col-blue').val();
 
         console.log(red);
         console.log(green);
         console.log(blue);
-        console.log(alpha);
 
         var color = new Color([red, green, blue]);
         return color;
@@ -209,6 +222,17 @@ $(function() {
         return regions;
     }
 
+    function drawrect(x1,y1,x2,y2){
+        var w,h,x,y;
+        //context.clearRect(0, 0, canvas.width, canvas.height);
+        w=Math.abs(x1-x2);
+        h=Math.abs(y1-y2);
+        x=Math.min(x1,x2);
+        y=Math.min(y1,y2);
+        context.strokeRect(x,y,w,h);
+    }
+
+});
 //    var data=[];
 //    var db;
 //    var tool="rect";
@@ -380,18 +404,7 @@ $(function() {
 //    }
 //
 //
-    function drawrect(x1,y1,x2,y2){
-        console.log("Drawing Rect")
-        var w,h,x,y;
-        //context.clearRect(0, 0, canvas.width, canvas.height);
-        w=Math.abs(x1-x2);
-        h=Math.abs(y1-y2);
-        x=Math.min(x1,x2);
-        y=Math.min(y1,y2);
-        context.strokeRect(x,y,w,h);
-    }
 
-});
 
 
 
