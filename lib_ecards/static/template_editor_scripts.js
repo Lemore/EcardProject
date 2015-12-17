@@ -94,6 +94,11 @@ $(function() {
         redraw();
     });
 
+    $('#back').click(function(e){
+        history.go(-1);
+    });
+
+
     $('#save').click(function(e){
         console.log($(this));
 

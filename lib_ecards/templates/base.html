@@ -27,30 +27,21 @@
      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
    <![endif]-->
 
-    <!--<script>-->
-    <!--$(document).ready(function(){-->
-        <!--$("#search").click(function(){-->
-        <!--console.log("SEARCH PRESSED");-->
-        <!--var search_str = $("input").val();-->
-        <!--var csrfToken = $("[name='csrfmiddlewaretoken']").val();-->
+<!--<script>-->
+<!--$(function() {-->
 
-        <!--$.ajax({-->
-            <!--method: "GET",-->
+        <!--if (document.URL.indexOf("search_tmplts") != -1)-->
+        <!--{-->
+            <!--var start = document.URL.lastIndexOf("=");-->
+            <!--var searchStr = document.URL.slice(start, -1).split("=").pop();-->
+            <!--console.log(searchStr);-->
+            <!--$(this).val = searchStr;-->
 
-            <!--url: "/search_tmplts/",-->
-            <!--data: {-->
-                <!--csrfmiddlewaretoken: csrfToken,-->
-                <!--search: search_str,-->
-            <!--},-->
-            <!--success: function(data) {-->
-                 <!--console.log(data)-->
-            <!--},-->
-            <!--failure: function(errMsg) {alert(errMsg)}-->
-        <!--});-->
 
-        <!--})-->
-    <!--});-->
-    <!--</script>-->
+      <!--};-->
+ <!--});-->
+
+<!--</script>-->
 
 </head>
 
@@ -89,7 +80,7 @@
 
           <form class="navbar-form navbar-left" action="{% url 'search_tmplts' %}" role="search" method="GET" >{% csrf_token %}
             <div class="form-group">
-                <input name="search" type="text" class="form-control" placeholder="Search">
+                <input name="search" type="text" class="form-control" placeholder="{{ search_str }}"/>
                 <button id="search" type="submit" class="btn btn-default">חפש</button>
             </div>
           </form>

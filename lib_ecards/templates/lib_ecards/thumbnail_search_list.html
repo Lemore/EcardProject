@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+
+{% block header %}
+מציג תמונות מקטלוג הספריה
+{% endblock %}
+
+
+{% block search %}
+<div class="panel panel-default">
+    <div class="panel-body">
+
+            <nav>
+                 <div class="container-fluid">
+                <form method="post" class="add_pictures">{% csrf_token %}
+                {% for s in sheets %}
+
+                    <div class="col-md-2">
+                        <a href="{% url 'template_editor' pk=s.recordid %}" class="thumbnail" >
+                            <img src="http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=thumbnail&dps_pid={{ s.thumbnail_id }}">
+                        </a>
+                    </div>
+
+
+                {% endfor %}
+
+                </form>
+                </div>
+                <div class="col-md-1">
+                    <ul class="pager">
+                        <li class="next"><a href="{% url "search_tmplts_next" search=search_str pk=last_index %}">הבא</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+    </div>
+</div>
+
+{% endblock %}
+

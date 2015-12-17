@@ -160,15 +160,26 @@ def search_tmplts (request):
     start_idx = 1
     bulk_size = 20
     sheets = primo_reader.getSheets(start_idx, bulk_size, search_str)
+    sheets_num = len(sheets)
     # sheets = primo_reader.getSheets(int(pk), bulk_size)
-    last_index = 20
-    return render(request, 'lib_ecards/thumbnail_list.html', {'sheets' : sheets, 'last_index' : last_index, 'search_str' : search_str})
+    last_index = start_idx + bulk_size
+    return render(request, 'lib_ecards/thumbnail_search_list.html', {'sheets' : sheets, 'last_index' : last_index, 'search_str' : search_str})
 
-    # tmplts = sheet.objects.filter(subject__contains=search_str)
-    # last_index = len(tmplts)
-    # return HttpResponse()
-        ### render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : 0 , 'last_index' : last_index})
 
+def search_tmplts_next (request, search, pk):
+    print ("SEARCHING")
+    # search_str = request.GET.get('search')
+    start_idx = pk
+    bulk_size = 20
+    sheets = primo_reader.getSheets(start_idx, bulk_size, search)
+    print (len(sheets))
+    # if sheets_num < 20:
+    #     last_index = int(pk)
+    # else:
+    last_index = int(pk) + bulk_size
+    # len(sheets) + 1
+
+    return render(request, 'lib_ecards/thumbnail_search_list.html', {'sheets' : sheets, 'last_index' : last_index, 'search_str' : search})
 
 
 def select_picture(request, pk):

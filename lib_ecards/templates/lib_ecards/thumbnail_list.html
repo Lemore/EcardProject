@@ -59,8 +59,14 @@
 
 <div class="panel panel-default">
     <div class="panel-body">
-        <div class="container-fluid">
+
             <nav>
+                <div class="col-md-1">
+                    <ul class="pager">
+                        <li class="previous"><a href="{% url "thumbnail_list_next" pk=last_index %}">חפש שוב</a></li>
+                    </ul>
+                </div>
+                <div class="container-fluid">
                 <form method="post" class="add_pictures">{% csrf_token %}
                 {% for s in sheets %}
 
@@ -78,14 +84,14 @@
                 {% endfor %}
 
                 </form>
-
+                </div>
                 <div class="col-md-1">
                     <ul class="pager">
-                        <li class="next"><a href="{% url "thumbnail_list_next" pk=last_index %}">הבא <span aria-hidden="true">&rarr;</span></a></li>
+                        <li class="next"><a href="{% url "thumbnail_list_next" pk=last_index %}">חפש שוב</a></li>
                     </ul>
                 </div>
             </nav>
-         </div>
+
     </div>
 </div>
 
