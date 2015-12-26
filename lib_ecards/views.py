@@ -190,8 +190,10 @@ def select_picture(request, pk):
 
 def template_editor(request, pk):
     print(request)
-    sheet = primo_reader.getSheetByRecId(pk);
-    link = sheet.get("link_id")
+        # switch back when library works and disable link=pk
+        # sheet = primo_reader.getSheetByRecId(pk);
+        # link = sheet.get("link_id")
+    link = pk
 
     pic_url = "http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid=" + link
     print("PICURL" + pic_url)

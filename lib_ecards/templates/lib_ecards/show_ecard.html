@@ -1,15 +1,66 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+
+
+
+<script>
+
+</script>
+
 {% block header %}
     Your Card
+    <br/>
+    <a href="javascript:postToWall()">Post To Wall</a>
+    <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId      : '886069554823665',
+              xfbml      : true,
+              version    : 'v2.5'
+            });
+          };
+
+
+          (function(d, s, id){
+             var js, fjs = d.getElementsByTagName(s)[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement(s); js.id = id;
+             js.src = "//connect.facebook.net/en_US/sdk.js";
+             fjs.parentNode.insertBefore(js, fjs);
+           }(document, 'script', 'facebook-jssdk'));
+
+
+
+          function postToWall() {
+
+            FB.ui({
+              method: 'share',
+              href: 'http://localhost:8000/show_ecard/66/',
+            }, function(response){});
+
+            <!--var params = {};-->
+            <!--params['message'] = 'Visit The Library! - http://http://web.nli.org.il';-->
+            <!--params['name'] = 'Test';-->
+            <!--params['link'] = 'http://localhost:8000/show_ecard/66/';-->
+            <!--params['picture'] = 'http://localhost:8000/show_ecard/66/';-->
+            <!--params['description'] = 'This is a test';-->
+
+            <!--FB.api('/me/feed', 'post', params, function(response) {-->
+              <!--if (!response || response.error) {-->
+                <!--alert('Error occured');-->
+              <!--} else {-->
+                <!--alert('Post ID: ' + response.id);-->
+              <!--}-->
+            <!--});-->
+          }
+    </script>
 {% endblock %}
 
 {% block main %}
 
-<!DOCTYPE html>
-<html lang="en">
-<body>
+
+
 <div style = "width:100%; margin:10px">
     <div width="{{ r.img_w }}" style = "float:left; width: 50%;"  style="position: absolute; margin:10px" >
          <img src="http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid={{ tmplt.link_id }}" style="position: absolute"/>
@@ -18,15 +69,17 @@
         <svg id="svg{{ r.id }}" width="{{ r.img_w }}" height="{{ r.img_h }}" style="position: absolute">
             <g id="{{ r.id }}" style="position: absolute" transform = "{{ r.transform }}">
                 <rect x="{{ r.x }}" y="{{ r.y }}" width="{{ r.width }}" height="{{ r.height }}" style="fill:{{ r.color }}" />
-                <text id="region{{ r.id }}_text" x="{{ r.txt_x }}" y="{{ r.txt_y }}" width="{{ r.width }}"
-                      style="fill:{{ r.txt_color }}; font-size:30; text-anchor:middle">{{ r.text }}</text>
+                <text id="region{{ r.id }}_text" x="{{ r.txt_x }}" y="{{ r.txt_y }}" width="{{ r.width }}" stroke="black" fill="white" stroke-width="2"
+                      style="font-size:40; text-anchor:middle ; font-family:'{{ r.font }}'">{{ r.text }}</text>
             </g>
         </svg>
       {% endfor %}
     </div>
+    <div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div>
 </div>
 
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-</body>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+
 
 {% endblock %}

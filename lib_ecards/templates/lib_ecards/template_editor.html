@@ -9,25 +9,64 @@
 
 <div style = "width:100%; margin:10px">
 <div style = "float: left">
-    <div style = "float:top "  >
-        <form>
-        <div class="input-group">
-            <span class="input-group-addon" >R</span>
-            <input type="text" class="form-control" id="col_red" placeholder="50" aria-describedby="basic-addon1">
-            <span class="input-group-addon">G</span>
-            <input type="text" class="form-control" id="col_green" placeholder="50" aria-describedby="basic-addon1">
-            <span class="input-group-addon">B</span>
-            <input type="text" class="form-control" id="col_blue" placeholder="50" aria-describedby="basic-addon1">
-            <div class="input-group-btn">
-                <button id="colorb" class="btn btn-default">Color</button>
+    <div clas="row" style = "float:top "  >
+          <div class="col-lg-6">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Font <span class="caret"></span></button>
+                <ul id="select_font" class="dropdown-menu">
+                  <li><a id="f_Aharoni" href="#">Aharoni</a></li>
+                  <li><a id="f_Arial"href="#">Arial Black</a></li>
+                  <li><a id="f_David" href="#">David</a></li>
+                  <li><a id="f_Levenim" href="#">Levenim MT</a></li>
+                  <li><a id="f_Miriam" href="#">Miriam</a></li>
+                  <li><a id="f_Narkisim" href="#">Narkisim</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div><!-- /btn-group -->
+              <input type="text" id="text_font" class="form-control" aria-label="...">
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+
+          <div class="col-lg-6">
+            <div class="input-group">
+              <div id="select_text_color" class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Text Color <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a id="text_black" href="#">Black</a></li>
+                  <li><a id="text_white" href="#">White</a></li>
+                </ul>
+              </div><!-- /btn-group -->
+              <input type="text" id="text_color" class="form-control" aria-label="...">
+            </div><!-- /input-group -->
+
+         <div class="col-lg-6">
+            <div class="input-group">
+               <span class="input-group-addon" >Font Size </span>
+               <input type="text" class="form-control" id="font_size" placeholder="20">
+            </div><!-- /input-group -->
+          </div>
+
+        <div class="col-lg-6">
+             <div class="input-group">
+                <span class="input-group-addon" >R </span>
+                <input type="text" class="form-control" id="col_red" placeholder="50">
+                <span class="input-group-addon">G </span>
+                <input type="text" class="form-control" id="col_green" placeholder="50">
+                <span class="input-group-addon">B </span>
+                <input type="text" class="form-control" id="col_blue" placeholder="50">
             </div>
+
         </div>
-        </form>
 
-
-        <button id="clear" class="btn btn-default">Clear</button>
-        <button id="save" class="btn btn-default">Save</button>
-        <button id="back" class="btn btn-default">Back</button>
+        <div class="col-lg-6">
+             <div class="input-group">
+                <button id="clear" class="btn btn-default">Clear</button>
+                <button id="save" class="btn btn-default">Save</button>
+                <button id="back" class="btn btn-default">Back</button>
+             </div>
+        </div>
     </div>
     <br/>
     <div id = "canvasDiv" style = "float:bottom"  style="position: absolute; margin:10px">
@@ -49,9 +88,9 @@
 <div style = "float: left">
        <canvas id="paint">
         </canvas>
-      <label id="color">Color Picker
-         <canvas id="colorpicker" width="200" height="200"></canvas>
-      </label>
+      <!--<label id="color">Color Picker-->
+         <!--<canvas id="colorpicker" width="200" height="200"></canvas>-->
+      <!--</label>-->
 </div>
           <!--<label id="imagelabel">Image name </label>-->
           <!--<input id="imagename" name="imagename">-->
@@ -60,5 +99,5 @@
           <!--<input id="load" type=button value="load" >-->
 
 </div>
-  <script src="{% static "template_editor_scripts.js" %}"></script>
+  <script src="{% static 'template_editor_scripts.js' %}" charset="utf-8">></script>
 {% endblock %}

@@ -56,37 +56,26 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">כרוז לי! </a>
+          <a class="navbar-brand" href="/show_tmplts" style="font-size:28; text-anchor:middle ; font-family:'MigdalHaemeq Medium'">כרוז לי! </a>
+          <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
         </div>
+
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li ><a href="/show_tmplts">תבניות מומלצות <span class="sr-only">(current)</span></a></li>
             <li ><a href="{% url "thumbnail_list_next" pk=0 %}"> תמונות מקטלוג הספריה </a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">תבניות מומלצות</a></li>
-                <li><a href="#">תמונות מקטלוג הספריה</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
           </ul>
 
           <form class="navbar-form navbar-left" action="{% url 'search_tmplts' %}" role="search" method="GET" >{% csrf_token %}
             <div class="form-group">
                 <input name="search" type="text" class="form-control" placeholder="{{ search_str }}"/>
-                <button id="search" type="submit" class="btn btn-default">חפש</button>
+                <button id="search" type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search" ></span>
+                </button>
             </div>
           </form>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Link3</a></li>
-          </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
@@ -96,10 +85,6 @@
         HEADER
     {% endblock %}
     </h1>
-
-    {% block search %}
-        CONTENT
-    {% endblock %}
 
     {% block main %}
         MAIN
