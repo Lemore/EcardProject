@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^search_tmplts/$', views.search_tmplts, name='search_tmplts'),
     url(r'^search_tmplts_next/(?P<search>.*)/(?P<pk>[0-9]+)/$', views.search_tmplts_next, name='search_tmplts_next'),
     url(r'^template_editor/(?P<pk>[A-Za-z0-9_]+)/$', views.template_editor, name='template_editor'),
+    url(r'^import/' , views.import_from_primo, name="import"),
 
     url(r'^thirdauth/$', views.thirdauth, name='thirdauth'),
 ]

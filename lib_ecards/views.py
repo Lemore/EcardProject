@@ -1,5 +1,6 @@
 import json
 import random
+from django.core.files.base import ContentFile
 
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
@@ -9,7 +10,9 @@ from django.template.context import RequestContext
 
 # from . import primo_reader
 from . import primo_reader_mock as primo_reader
-from .models import Sheet
+import requests
+from lib_ecards import models
+from .models import Sheet, Image
 from .models import EcardText
 
 # Create your views here.
@@ -190,13 +193,8 @@ def select_picture(request, pk):
 
 
 def template_editor(request, pk):
-    print(request)
-        # switch back when library works and disable link=pk
-        # sheet = primo_reader.get_sheet_by_id(pk);
-        # link = sheet.get("link_id")
-    link = pk
-
-    pic_url = "http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid=" + link
+    img = Image.objects.get(pk=pk)
+    pic_url = img.image_file.url
     print("PICURL" + pic_url)
     context = {'pic_url': pic_url }
     return render(request, 'lib_ecards/template_editor.html', context)
@@ -210,3 +208,15 @@ def thirdauth(request):
                              context_instance=context)
 
 
+
+def import_from_primo (request):
+    rec_id =  request.POST["record_id"]
+    sheet = primo_reader.get_sheet_by_id(rec_id)
+    image_url = sheet["image_url"]
+    image_content = ContentFile(requests.get(image_url).content)
+    o = models.Image()
+    o.rosetta_id = rec_id
+    filename = "{}.jpg".format(rec_id)
+    o.image_file.save(filename, image_content)
+    o.save()
+    return redirect('template_editor' ,o.pk)
