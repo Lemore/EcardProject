@@ -4,7 +4,11 @@ from xml.etree import ElementTree
 import urllib
 from urllib.parse import quote
 
-def getSheets(start_index, bulk_size, search_str):
+
+THUMBNAIL_URL_TEMPLATE = "http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=thumbnail&dps_pid={}"
+IMAGE_URL_TEMPLATE = "http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid={}"
+
+def get_sheets(start_index, bulk_size, search_str):
 #    thumbnails = []
 #    ids = []
     sheets = []
@@ -36,15 +40,17 @@ def getSheets(start_index, bulk_size, search_str):
             for e in doc.iter():
                 # print (e.tag)
 
-                if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}recordid"):
+                if e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}recordid":
                     sheet.update({"recordid" : e.text})
 
                 if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}lds41"):
 #                    thumbnails.append(e.text)
-                    sheet.update( {"thumbnail_id" : e.text[e.text.rfind('=')+1:] })
+                    sheet["thumbnail_id"] = e.text[e.text.rfind('=')+1:]
+                    sheet["thumbnail_url"] = THUMBNAIL_URL_TEMPLATE.format(sheet["thumbnail_id"])
 
                 if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}lds42"):
                     sheet.update( {"link_id" : e.text[e.text.rfind('=')+1:] })
+                    sheet["image_url"] = IMAGE_URL_TEMPLATE.format(sheet["link_id"])
 
                 if(e.tag == "{http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib}rights"):
                     # rights = e.text[e.text.rfind('=')+1:]
@@ -75,7 +81,7 @@ def getSheets(start_index, bulk_size, search_str):
     return sheets
 #    return thumbnails
 
-def getSheetByRecId(recordId):
+def get_sheet_by_id(recordId):
 
     sheet = {}
 
@@ -115,6 +121,6 @@ def getSheetByRecId(recordId):
                     sheet.update( { "regions" : ""})
     return sheet
 
-# getSheetByRecId("NNL_Ephemera01002926506")
+# get_sheet_by_id("NNL_Ephemera01002926506")
 
 # getSheets(1, 10)
