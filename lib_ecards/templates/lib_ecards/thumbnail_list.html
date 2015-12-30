@@ -1,101 +1,52 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-    <!--<meta charset="UTF-8">-->
-    <!--<title></title>-->
-    <!--<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>-->
-
-<!--</head>-->
-<!--<body>-->
 {% extends "base.html" %}
 
-
-
 {% block header %}
-מציג תמונות מקטלוג הספריה
+    מציג תמונות מקטלוג הספריה
 {% endblock %}
-
 
 {% block main %}
 
-    <!--<script>-->
-    <!--$(document).ready(function(){-->
-    <!--$("input").click(function(){-->
-        <!--$(this).prop('disabled', true);-->
-
-        <!--var title = $(this).data("title");-->
-        <!--var thumb = $(this).data("thumbnail_id");-->
-        <!--var lnk = $(this).data("link_id");-->
-        <!--var rec = $(this).data("recordid");-->
-        <!--var sub = $(this).data("subjects");-->
-        <!--var rts = $(this).data("rights");-->
-        <!--var reg = $(this).data("regions");-->
-        <!--var csrfToken = $("[name='csrfmiddlewaretoken']").val()-->
-
-        <!--$.ajax({-->
-            <!--method: "POST",-->
-
-            <!--url: "/add_picture",-->
-            <!--data: {-->
-                <!--csrfmiddlewaretoken: csrfToken,-->
-                <!--title: title,-->
-                <!--thumbnail_id: thumb,-->
-                <!--link_id: lnk,-->
-                <!--recordid: rec,-->
-                <!--subjects: sub,-->
-                <!--rights: rts-->
-            <!--},-->
-            <!--success: function(data) {-->
-                 <!--console.log(data)-->
-            <!--},-->
-            <!--failure: function(errMsg) {alert(errMsg)}-->
-        <!--})-->
-
-    <!--})-->
-    <!--});-->
-    <!--</script>-->
-
-<!--<p>Click the checkbox next to pictures you are interested in</p>-->
-
-<div class="panel panel-default">
-    <div class="panel-body">
+    <div class="panel panel-default">
+        <div class="panel-body">
 
             <nav>
                 <div class="col-md-1">
                     <ul class="pager">
-                        <li class="previous"><a href="{% url "thumbnail_list_next" pk=last_index %}">חפש שוב</a></li>
+                        <li class="previous"><a
+                                href="{% url "thumbnail_list_next" pk=last_index %}">חפש
+                            שוב</a></li>
                     </ul>
                 </div>
                 <div class="container-fluid">
-                <form method="post" class="add_pictures">{% csrf_token %}
-                {% for s in sheets %}
+                    <form method="post" class="add_pictures">{% csrf_token %}
+                        {% for s in sheets %}
 
-                    <div class="col-md-2">
-                        <!--<input type="checkbox" id="{{ s.recordid }}"-->
-                               <!--data-title="{{ s.title }}" data-thumbnail_id="{{ s.thumbnail_id }}" data-link_id="{{ s.link_id }}"-->
-                               <!--data-recordid="{{ s.recordid }}" data-subjects="{{ s.subjects }}", data-rights="{{ s.rights }}"/>-->
+                            <div class="col-md-2">
 
-                        <a href="{% url 'template_editor' pk=s.recordid %}" class="thumbnail" >
-                            <img src="http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=thumbnail&dps_pid={{ s.thumbnail_id }}">
-                        </a>
-                    </div>
+                                <a href="{% url 'template_editor' pk=s.recordid %}"
+                                   class="thumbnail">
+                                    <img src="{{ s.thumbnail_url }}">
+                                </a>
+                            </div>
 
 
-                {% endfor %}
+                        {% endfor %}
 
-                </form>
+                    </form>
                 </div>
                 <div class="col-md-1">
                     <ul class="pager">
-                        <li class="next"><a href="{% url "thumbnail_list_next" pk=last_index %}">חפש שוב</a></li>
+                        <li class="next"><a
+                                href="{% url "thumbnail_list_next" pk=last_index %}">חפש
+                            שוב</a></li>
                     </ul>
                 </div>
             </nav>
 
+        </div>
     </div>
-</div>
 
-<!--<a href="{% url "thumbnail_list_next" pk=last_index %}">NEXT BATCH</a>-->
+    <!--<a href="{% url "thumbnail_list_next" pk=last_index %}">NEXT BATCH</a>-->
 
 {% endblock %}
 <!--</body>-->

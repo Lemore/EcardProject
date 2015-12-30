@@ -7,15 +7,16 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 
-from . import primo_reader
-from .models import sheet
-from .models import ecard_text
+# from . import primo_reader
+from . import primo_reader_mock as primo_reader
+from .models import Sheet
+from .models import EcardText
 
 # Create your views here.
 def thumbnail_list_next(request, pk):
     start_idx = random.randint(0, 15800)
     bulk_size = 20
-    sheets = primo_reader.getSheets(start_idx, bulk_size, "")
+    sheets = primo_reader.get_sheets(start_idx, bulk_size, "")
     # sheets = primo_reader.getSheets(int(pk), bulk_size)
     print("PK = " + pk)
     print(len(sheets))
@@ -25,7 +26,7 @@ def thumbnail_list_next(request, pk):
 
 
 def thumbnail_list(request):
-    sheets = primo_reader.getSheets(1, 20, "")
+    sheets = primo_reader.get_sheets(1, 20, "")
     last_index = 1 + 20
     return render(request, 'lib_ecards/thumbnail_list.html', {'sheets' : sheets, 'last_index' : last_index})
 
@@ -44,7 +45,7 @@ def add_picture(request):
     sub = request.POST.get('subjects')
     rights = request.POST.get('rights')
 
-    mysheet = sheet(title=tit, thumbnail_id=thumb, link_id=link, recordid=rec, subjects=sub, rights=rights)
+    mysheet = Sheet(title=tit, thumbnail_id=thumb, link_id=link, recordid=rec, subjects=sub, rights=rights)
     mysheet.save()
 
     return JsonResponse({'message': 'success'})
@@ -54,7 +55,7 @@ def add_picture_template(request):
     print("Adding Picture template")
 
     rec = request.POST.get('recordid')
-    sht = primo_reader.getSheetByRecId(rec)
+    sht = primo_reader.get_sheet_by_id(rec)
     tit = sht.get('title')
     thumb = sht.get('thumbnail_id')
     link = sht.get('link_id')
@@ -63,7 +64,7 @@ def add_picture_template(request):
     regions = request.POST.get('regions')
 
     print("About to save")
-    mysheet = sheet(title=tit, thumbnail_id=thumb, link_id=link, recordid=rec,
+    mysheet = Sheet(title=tit, thumbnail_id=thumb, link_id=link, recordid=rec,
                     subjects=sub, rights=rights, regions=regions)
     mysheet.save()
 
@@ -71,7 +72,7 @@ def add_picture_template(request):
 
 
 def show_tmplts (request):
-    tmplts = sheet.objects.all()[:10]
+    tmplts = Sheet.objects.all()[:10]
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : 0 , 'last_index' : 9})
 
 
@@ -79,14 +80,14 @@ def show_tmplts (request):
 def show_tmplts_next(request, pk):
     last_index = int(pk)
 
-    if last_index + 11 > len(sheet.objects.all()):
-        last_index = len(sheet.objects.all())
+    if last_index + 11 > len(Sheet.objects.all()):
+        last_index = len(Sheet.objects.all())
         first_index = last_index - 10
     else:
         first_index = last_index + 1
         last_index = last_index + 10
 
-    tmplts = sheet.objects.all()[first_index : last_index]
+    tmplts = Sheet.objects.all()[first_index : last_index]
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : first_index , 'last_index' : last_index})
 
 
@@ -101,20 +102,20 @@ def show_tmplts_prev(request, pk):
         last_index = first_index
         first_index = first_index - 10
 
-    tmplts = sheet.objects.all()[first_index : last_index]
+    tmplts = Sheet.objects.all()[first_index : last_index]
     return render(request, 'lib_ecards/show_tmplts.html', {'tmplts' : tmplts, 'first_index' : first_index , 'last_index' : last_index})
 
 
 
 def mem_editor(request, pk):
-    tmplt = sheet.objects.get(pk=pk)
+    tmplt = Sheet.objects.get(pk=pk)
     context = {'tmplt': tmplt, 'regions': json.loads(tmplt.regions)}
     return render(request, 'lib_ecards/mem_editor.html', context)
 
 
 
 def mem_editor_save (request, pk):
-    tmplt = sheet.objects.get(pk=pk)
+    tmplt = Sheet.objects.get(pk=pk)
     regions = json.loads(tmplt.regions)
 
     text = "{"
@@ -125,7 +126,7 @@ def mem_editor_save (request, pk):
         text = text + "\"" + str(r.get("id")) + "\" : \"" + request.POST.get(input) + "\""
     text = text + "}"
 
-    etext = ecard_text(sheet=tmplt, text=text)
+    etext = EcardText(sheet=tmplt, text=text)
     etext.save()
     etext_id = etext.id
     print("etext ID: " + str(etext_id))
@@ -137,11 +138,11 @@ def mem_editor_save (request, pk):
 
 
 def show_ecard(request, pk):
-    etext = ecard_text.objects.get(pk=pk)
+    etext = EcardText.objects.get(pk=pk)
     sht = etext.sheet
     strings = json.loads(etext.text)
     sheet_pk = sht.id
-    tmplt = sheet.objects.get(pk=sheet_pk)
+    tmplt = Sheet.objects.get(pk=sheet_pk)
 
     regions = json.loads(tmplt.regions)
     for r in regions:
@@ -159,7 +160,7 @@ def search_tmplts (request):
 
     start_idx = 1
     bulk_size = 20
-    sheets = primo_reader.getSheets(start_idx, bulk_size, search_str)
+    sheets = primo_reader.get_sheets(start_idx, bulk_size, search_str)
     sheets_num = len(sheets)
     # sheets = primo_reader.getSheets(int(pk), bulk_size)
     last_index = start_idx + bulk_size
@@ -171,7 +172,7 @@ def search_tmplts_next (request, search, pk):
     # search_str = request.GET.get('search')
     start_idx = pk
     bulk_size = 20
-    sheets = primo_reader.getSheets(start_idx, bulk_size, search)
+    sheets = primo_reader.get_sheets(start_idx, bulk_size, search)
     print (len(sheets))
     # if sheets_num < 20:
     #     last_index = int(pk)
@@ -191,7 +192,7 @@ def select_picture(request, pk):
 def template_editor(request, pk):
     print(request)
         # switch back when library works and disable link=pk
-        # sheet = primo_reader.getSheetByRecId(pk);
+        # sheet = primo_reader.get_sheet_by_id(pk);
         # link = sheet.get("link_id")
     link = pk
 
