@@ -1,4 +1,4 @@
-def get_sheets(start_index, bulk_size, search_str):
+def get_records(start_index, bulk_size, search_str):
     sheets = [
         {
             'recordid': '123',
@@ -14,7 +14,7 @@ def get_sheets(start_index, bulk_size, search_str):
     return sheets
 
 
-def get_sheet_by_id(recordId):
+def get_record_by_id(recordId):
     return {
         'recordid': '123',
         'thumbnail_id': '456',
