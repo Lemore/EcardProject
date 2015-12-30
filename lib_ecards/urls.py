@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.conf.urls.static import static
+
 __author__ = 'user'
 
 from django.conf.urls import url
@@ -22,4 +25,4 @@ urlpatterns = [
     url(r'^import/' , views.import_from_primo, name="import"),
 
     url(r'^thirdauth/$', views.thirdauth, name='thirdauth'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
