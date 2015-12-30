@@ -17,11 +17,11 @@
                 <!--<img src="{% static tmplt.image_file %}" style="position: absolute"/>-->
                 <img src="http://rosetta.nli.org.il/delivery/DeliveryManagerServlet?dps_func=stream&dps_pid={{ tmplt.link_id }}" style="position: absolute"/>
               {% for r in regions %}
-                <svg id="svg{{ r.id }}" width="{{ r.img_w }}" height="{{ r.img_h }}" style="position: absolute">
+                <svg id="svg{{ r.id }}" width="{{ r.img_w }}" height="{{ r.img_h }}" style="position: absolute" direction="rtl" xml:lang="he">>
                     <g id="{{ r.id }}" style="position: absolute" transform = "{{ r.transform }}">
                         <rect x="{{ r.x }}" y="{{ r.y }}" width="{{ r.width }}" height="{{ r.height }}" style="fill:{{ r.color }}" />
-                        <text id="region{{ r.id }}_text" x="{{ r.txt_x }}" y="{{ r.txt_y }}" width="{{ r.width }}"
-                              style="fill:{{ r.txt_color }}; font-size:30; text-anchor:middle">Text{{ r.id }}</text>
+                        <text id="region{{ r.id }}_text" x="{{ r.txt_x }}" y="{{ r.txt_y }}" width="{{ r.width }}" stroke="black" fill="white" stroke-width="2"
+                              style="font-family:'{{ r.font }}'; font-size:{{ r.font_size }}; text-anchor:middle">{{ r.id }} ???</text>
                     </g>
                 </svg>
               {% endfor %}

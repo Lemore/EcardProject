@@ -16,20 +16,19 @@ $(function() {
     var paint;
     var tool="rect";
     var currentcolor = "black";
-    var fillcolor = "white";
-    var textcolor = "black";
-    var text_font = "Aharoni";
-    font_size = "20";
+    var fillcolor = "";
+    var textcolor = "white";
+    var text_font = "Noot";
+    font_size = "50";
 
-    var red = 255;
-    var green = 255;
-    var blue = 255;
+    var red = "";
+    var green = "";
+    var blue = "";
 
     canvas = document.createElement('canvas');
     canvas.setAttribute('width', img_width);
     canvas.setAttribute('height', img_height);
     canvas.setAttribute('id', 'canvas');
-    canvas.setAttribute('dir', 'rtl');
     canvasDiv.appendChild(canvas);
     if(typeof G_vmlCanvasManager != 'undefined') {
         canvas = G_vmlCanvasManager.initElement(canvas);
@@ -81,7 +80,7 @@ $(function() {
         obj.fill=fillcolor;
         obj.font = text_font;
         obj.font_size = font_size;
-        obj.text_color = text_color;
+//        obj.text_color = text_color;
 
         obj.x1=mouseX;
         obj.y1=mouseY;
@@ -99,12 +98,6 @@ $(function() {
     $('#canvas').mouseleave(function(e){
         paint = false;
     });
-
-//    function addClick(x, y, dragging){
-//      clickX.push(x);
-//      clickY.push(y);
-//      clickDrag.push(dragging);
-//    }
 
     $('#clear').click(function(e){
         dataObjects=[];
@@ -143,9 +136,9 @@ $(function() {
     });
 
 
-    $('#colorpicker').click(function(e){
-        paint = false;
-    });
+//    $('#colorpicker').click(function(e){
+//        paint = false;
+//    });
 
     $("#col_red").on('input', function() {
         red = $(this).val();
@@ -168,10 +161,10 @@ $(function() {
         $('#text_font').val(text_font);
     });
 
-    $('#select_text_color').on('click', 'a', function(e) {
-        text_color = $(e.target).text();
-        $('#text_color').val(text_color);
-    });
+//    $('#select_text_color').on('click', 'a', function(e) {
+//        text_color = $(e.target).text();
+//        $('#text_color').val(text_color);
+//    });
 
     function redraw(){
 //      context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
@@ -184,12 +177,14 @@ $(function() {
                 context.strokeStyle=obj.color;
                 context.fillStyle=obj.fill;
                 drawrect(obj.x1,obj.y1,obj.x2,obj.y2, obj.fill);
-                context.font = "30px Arial";
+                context.font = obj.font_size + "px " + obj.font;
                 context.strokeStyle="black";
+                context.lineWidth = 2;
                 context.fillStyle="white";
                 context.textAlign = "center";
-                context.fillText("????",obj.x1 + (obj.x2 - obj.x1)/2 ,obj.y1 + (obj.y2 - obj.y1)/2);
-                context.strokeText("????",obj.x1 + (obj.x2 - obj.x1)/2 ,obj.y1 + (obj.y2 - obj.y1)/2);
+                context.fillText("\u05D3\u05D5\u05D2\u05DE\u05D0",obj.x1 + (obj.x2 - obj.x1)/2 ,obj.y1 + (obj.y2 - obj.y1)/2);
+                context.strokeText("\u05D3\u05D5\u05D2\u05DE\u05D0",obj.x1 + (obj.x2 - obj.x1)/2 ,obj.y1 + (obj.y2 - obj.y1)/2);
+
             }
             i++;
         }
@@ -231,16 +226,9 @@ $(function() {
 //    }
 
     function getFillColor() {
-//        var red = $("#col-red").val();
-//        var green = $("#col-green").val();
-//        var blue = $("#col-blue").val();
-
-//        console.log(red);
-//        console.log(green);
-//        console.log(blue);
-//
-
-        var color = "rgb(" + red + "," + green + "," + blue + ")";
+        var color = "";
+        if(red != "" && green != "" && blue != "")
+            color = "rgb(" + red + "," + green + "," + blue + ")";
 //        var color = new Color([red, green, blue]);
         console.log (color);
 
@@ -269,7 +257,9 @@ $(function() {
                 regions = regions + ', "img_h" : ' + img_height;
                 regions = regions + ', "txt_x" : ' + (obj.x1 + (obj.x2 - obj.x1)/2);
                 regions = regions + ', "txt_y" : ' + (obj.y1 + (obj.y2 - obj.y1)/2);
-                regions = regions + ', "txt_color" : "black" ';
+                regions = regions + ', "txt_color" : "white" ';
+                regions = regions + ', "font" : \"' + obj.font + '\"';
+                regions = regions + ', "font_size" : ' + obj.font_size;
                 regions = regions + ', "text" : "" }';
             }
             i++;
@@ -290,8 +280,13 @@ $(function() {
         x=Math.min(x1,x2);
         y=Math.min(y1,y2);
         context.fillStyle = color;
+        context.strokeStyle = currentcolor;
+        context.lineWidth = 1;
         context.strokeRect(x,y,w,h);
-        context.fillRect(x,y,w,h);
+
+        if(color != "") {
+            context.fillRect(x,y,w,h);
+        }
     }
 
 });

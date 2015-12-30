@@ -70,7 +70,7 @@
             <g id="{{ r.id }}" style="position: absolute" transform = "{{ r.transform }}">
                 <rect x="{{ r.x }}" y="{{ r.y }}" width="{{ r.width }}" height="{{ r.height }}" style="fill:{{ r.color }}" />
                 <text id="region{{ r.id }}_text" x="{{ r.txt_x }}" y="{{ r.txt_y }}" width="{{ r.width }}" stroke="black" fill="white" stroke-width="2"
-                      style="font-size:40; text-anchor:middle ; font-family:'{{ r.font }}'">{{ r.text }}</text>
+                      style="font-size:'{{ r.font_size }}' ; text-anchor:middle ; font-family:'{{ r.font }}'">{{ r.text }}</text>
             </g>
         </svg>
       {% endfor %}
